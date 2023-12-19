@@ -9,9 +9,6 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ProductSchema } from '../../schema/ProductSchema'
 
-//type FormEvent = React.FormEvent<HTMLFormElement>
-//type HandleInputChange = ChangeEvent<HTMLInputElement>;
-
 export default function ProductsForm() {
 
     const initialState = {
@@ -20,7 +17,6 @@ export default function ProductsForm() {
         price: 0
     }
 
-    //const [product, setProduct] = useState<Product>(initialState)
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const params = useParams();
@@ -57,13 +53,10 @@ export default function ProductsForm() {
                 setValue("name", foundProduct.name);
                 setValue("price", foundProduct.price);
             }
-
-            console.log(FormData.toString())
         }
     }, [params.id, products, setValue])
 
     const handleCancel = () => {
-
         setValue("name", "")
         setValue("price", 0)
     }
@@ -74,7 +67,7 @@ export default function ProductsForm() {
                 <h1 className="text-3xl text-primary font-bold underline text-center">
                     Register Product
                 </h1>
-                <p className=' text-lg font-light text-gray-600'>Product management for your orders</p>
+                <p className=' text-xl font-light text-gray-600'>Product management for your orders</p>
             </div>
 
             <div className='grid place-items-center p-5'>

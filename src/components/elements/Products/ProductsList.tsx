@@ -13,7 +13,6 @@ export default function ProductsList() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
 
-    console.log(products)
     const handleDelete = (id: string) => {
         dispatch(deleteProduct(id))
     }
@@ -24,20 +23,20 @@ export default function ProductsList() {
                 <h1 className="text-3xl text-primary font-bold underline text-center">
                     Product Management
                 </h1>
-                <p className=' text-lg font-light text-gray-600'>Product management for your orders</p>
+                <p className=' text-xl font-light text-gray-600'>Product management for your orders</p>
             </div>
             <div className="grid place-items-center" >
                 <Button placeholder="" onClick={() => navigate('/')} variant="outlined" className=' shadow-md'>Back to Orders</Button>
 
             </div>
             <div className="flex py-4 my-5 sm:flex-col gap-5 md:flex-row justify-between">
-                <div className={`grid place-items-center p-2 rounded-md shadow-md bg-primary w-full`}>
-                    <p className=' text-start text-lg text-second font-ligth'>
+                <div className={`grid place-items-center p-2 rounded-md shadow-lg bg-second w-full`}>
+                    <p className=' text-start text-lg text-primary font-bold'>
                         {`Total de Productos: ${products.length}`}
                     </p>
                 </div>
                 <button
-                    className=' bg-details text-center text-gray-200 justify-end text-lg  font-medium p-3 rounded-md shadow-lg'
+                    className=' bg-primary text-center text-gray-200 justify-end text-lg  font-medium p-3 rounded-md shadow-lg'
                     onClick={() => navigate('/products/create')}
                 >
                     Add Product

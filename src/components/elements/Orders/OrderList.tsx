@@ -1,13 +1,15 @@
 "use client"
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'
-import { Order } from "../../interfaces/Index";
+import { Order } from "../../../interfaces/Index";
 import { Button } from "@material-tailwind/react";
-import { useAppSelector } from "../../app/features/service/hooks";
+import { useAppSelector, useAppDispatch } from "../../../app/features/service/hooks";
+import { deleteOrder } from '../../../app/features/orders/OrderSlice';
 
 export default function OrderList() {
     const orders = useAppSelector(state => state.OrderManager);
     const products = useAppSelector(state => state.ProductManager)
+    const dispatch = useAppDispatch();
 
     const navigate = useNavigate();
 
@@ -17,7 +19,7 @@ export default function OrderList() {
                 <h1 className="text-3xl text-primary font-bold underline text-center">
                     Order Management
                 </h1>
-                <p className=' text-lg font-light text-gray-600'>This application manages your orders</p>
+                <p className=' text-xl font-light text-gray-600'>This application manages your orders</p>
             </div>
             <div className="grid place-items-center" >
                 <Button placeholder="" onClick={() => navigate('/products')} variant="outlined" className=' shadow-md'>Products Management</Button>
@@ -25,19 +27,19 @@ export default function OrderList() {
             </div>
             <div className='flex py-4 my-5 sm:flex-col gap-5 md:flex-row justify-between'>
                 <div className={`grid place-items-center p-2 rounded-md shadow-md bg-second w-full`}>
-                    <p className=' text-start text-lg text-primary font-ligth'>
+                    <p className=' text-start text-lg text-primary font-bold'>
                         {`Total de Pedidos: ${orders.length}`}
                     </p>
                 </div>
                 <div className={`grid place-items-center p-2 rounded-md shadow-md bg-primary w-full`}>
-                    <p className=' text-start text-lg text-second  font-ligth'>
+                    <p className=' text-start text-lg text-second  font-bold'>
                         {`Ingreso por entrega: 500 C$`}
                     </p>
                 </div>
                 {products.length > 0 && (
                     <button
-                        className='bg-details text-center w-full text-gray-200 text-lg  font-medium p-3 rounded-md shadow-lg border ring-2 ring-blue-900 hover:bg-sky-700'
-                        onClick={() => navigate('/order/register')}
+                        className='bg-details text-center w-full text-gray-200 text-lg  font-medium p-3 rounded-md shadow-lg hover:bg-details/90'
+                        onClick={() => navigate('/order/create')}
                     >
                         New Order
                     </button>
@@ -56,10 +58,13 @@ export default function OrderList() {
                                 {`Nombre de Cliente: ${t.customer}`}
                             </p>
                             <p className=' text-start text-lg font-light'>
-                                {`Producto: Flan de Caramelo`}
+                                {`Producto: ${t.product}`}
                             </p>
                             <p className=' text-start text-lg font-light'>
                                 {`Cantidad: ${t.quantity} unidad`}
+                            </p>
+                            <p className=' text-start text-lg font-light'>
+                                {`Fecha: ${t.dateOrder.toString()}`}
                             </p>
                             <p className=' text-start text-lg font-light'>
                                 {`Dirección: ${t.address}`}
@@ -80,14 +85,14 @@ export default function OrderList() {
                             <button
                                 type="button"
                                 className="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 shadow-md"
-                            //onClick={() => navigate(`/create-task/${t.idOrder}`)}
+                                onClick={() => navigate(`/order/create/${t.idOrder}`)}
                             >
                                 <PencilSquareIcon height={25} width={25} />
                             </button>
                             <button
                                 type="button"
                                 className="text-white bg-red-700 hover:bg-red-800  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 shadow-md"
-                            //onClick={() => t.idOrder && deleteTask(t.idOrder)}
+                                onClick={() => t.idOrder && dispatch(deleteOrder(t.idOrder))}
                             >
                                 <TrashIcon height={25} width={25} />
                             </button>
@@ -105,16 +110,16 @@ export default function OrderList() {
 
             </div>
             {orders && !orders.length && (
-                <div className={`bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md my-5`} role="alert">
+                <div className={`bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md my-5`} role="alert">
                     <div className="flex">
                         <div className="py-1">
-                            <svg className="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <svg className="fill-current h-6 w-6 text-primary mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
                             </svg>
                         </div>
                         <div>
-                            <p className="font-bold text-start">Alert</p>
-                            <p className="text-sm">You don't have any pending orders.</p>
+                            <p className="font-bold text-start text-primary">Alert</p>
+                            <p className="text-sm text-primary">You don't have any pending orders.</p>
                         </div>
                     </div>
                 </div>

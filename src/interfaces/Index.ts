@@ -1,10 +1,12 @@
 export interface Order {
     idOrder?: string;
-    idProduct?: string;
+    product?: string;
     quantity: number;
     customer: string;
+    dateOrder: string;
+    timeOrder:  string;
     address: string;
-    phone: string;
+    phone: number;
     details: string;
     status: boolean;
 }

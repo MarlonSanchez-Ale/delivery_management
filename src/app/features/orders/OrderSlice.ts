@@ -35,8 +35,8 @@ export const OrderSlice = createSlice({
                 foundOrder.status = !status;
             }
         },
-        deleteOrder: (state, action: PayloadAction<Order>) => {
-            const { idOrder } = action.payload;
+        deleteOrder: (state, action: PayloadAction<string>) => {
+            const idOrder = action.payload;
             const foundOrder = state.find(order => order.idOrder === idOrder);
             if (foundOrder) {
                 state.splice(state.indexOf(foundOrder), 1)

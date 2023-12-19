@@ -1,8 +1,8 @@
 import { Fragment, useState } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import OrderList from './components/elements/OrderList';
-import OrderRegister from './components/elements/OrderRegister';
+import OrderList from './components/elements/Orders/OrderList';
+import OrderCreate from './components/elements/Orders/OrderCreate';
 import ProductsList from './components/elements/Products/ProductsList';
 import ProductsForm from './components/elements/Products/ProductsForm';
 import { Tasks } from './interfaces/Tasks';
@@ -67,8 +67,8 @@ function App() {
             <Route path='/products' element={<ProductsList />} />
             <Route path='/products/create' element={<ProductsForm />} />
             <Route path='/products/create/:id' element={<ProductsForm />} />
-            <Route path='/order/register' element={<OrderRegister />} />
-            <Route path='/order/register/:id' element={<OrderRegister />} />
+            <Route path='/order/create' element={<OrderCreate />} />
+            <Route path='/order/create/:id' element={<OrderCreate />} />
           </Routes>
         </BrowserRouter>
       </div >
