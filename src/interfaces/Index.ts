@@ -6,7 +6,7 @@ export interface Order {
     dateOrder: string;
     timeOrder:  string;
     address: string;
-    phone: number;
+    phone: string;
     details: string;
     status: boolean;
 }

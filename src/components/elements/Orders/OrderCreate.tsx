@@ -22,7 +22,7 @@ export default function OrderCreate() {
             dateOrder: "",
             timeOrder: "",
             address: "",
-            phone: 0,
+            phone: "",
             details: "",
         }
     });
@@ -83,14 +83,18 @@ export default function OrderCreate() {
     }
 
     const handleCancel = () => {
-        setValue("product", "")
-        setValue("quantity", 0)
-        setValue("customer", "")
-        setValue("dateOrder", "")
-        setValue("timeOrder", "")
-        setValue("address", "")
-        setValue("phone", 0)
-        setValue("details", "")
+        if (params.id) {
+            navigate('/')
+        } else {
+            setValue("product", "")
+            setValue("quantity", 0)
+            setValue("customer", "")
+            setValue("dateOrder", "")
+            setValue("timeOrder", "")
+            setValue("address", "")
+            setValue("phone", "")
+            setValue("details", "")
+        }
     }
 
 
@@ -129,7 +133,7 @@ export default function OrderCreate() {
                             type='number'
                             id='quantity'
                             required={true}
-                            {...register('quantity')}
+                            {...register('quantity', { valueAsNumber: true })}
                         />
                         {errors.quantity?.message && (<p className='text-md text-red-400 font-light'>{errors.quantity?.message}</p>)}
                     </div>
@@ -190,10 +194,11 @@ export default function OrderCreate() {
                         <input
                             className='p-2 rounded-md w-full shadow-md text-slate-800'
                             placeholder="88888888"
-                            type='number'
+                            type='tel'
                             id='phone'
+                            pattern="[0-9]{8}"
                             required={true}
-                            {...register('phone')}
+                            {...register('phone', { valueAsNumber: false })}
                         />
                         {errors.phone?.message && (<p className='text-md text-red-400 font-light'>{errors.phone?.message}</p>)}
 

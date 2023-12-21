@@ -13,14 +13,8 @@ export const ProductSchema = z.object({
         .refine(value => isNaN(parseFloat(value)), {
             message: "The name cannot be a number"
         }),
-    price: z.string({
+    price: z.number({
         required_error: "Age is required",
     })
-        .transform(value => parseFloat(value))
-        .refine(value => !isNaN(value), {
-            message: "Price must be a number"
-        })
-        .refine(value => value > 0, {
-            message: "Price must be non-zero"
-        })
+        .positive({ message: "Price must be non-zero" })
 })

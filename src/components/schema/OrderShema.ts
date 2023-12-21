@@ -25,14 +25,10 @@ export const OrderShema = z.object({
         .refine(value => value !== "Select...", {
             message: "You must select a product!"
         }),
-    quantity: z.string()
-        .transform(value => parseFloat(value))
-        .refine(value => !isNaN(value), {
-            message: "Quantity must be a number"
-        })
-        .refine(value => value > 0, {
-            message: "Quantity mus be non-zero"
-        }),
+    quantity: z.number({
+        required_error: "Quantity is required"
+    })
+        .positive({ message: "Quantity cannot be less than or equal to zero" }),
     customer: z.string({
         required_error: "Customer is required"
     })
@@ -59,15 +55,9 @@ export const OrderShema = z.object({
         .refine(value => isNaN(parseFloat(value)), {
             message: "Customer name cannot be a number"
         }),
-    phone: z.string()
-        .min(8, { message: "Customer must be at least 8 characters long" })
-        .transform(value => parseFloat(value))
-        .refine(value => !isNaN(value), {
-            message: "Phone must be a number"
-        })
-        .refine(value => value > 0, {
-            message: "Phone must be non-zero"
-        }),
+    phone: z.string({
+        required_error: "Phone is required"
+    }),
     details: z.string({
         required_error: "Details is required"
     })
