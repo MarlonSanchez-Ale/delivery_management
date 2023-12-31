@@ -1,14 +1,22 @@
-export interface Order {
-    idOrder?: string;
-    product?: string;
-    quantity: number;
+interface UniqueIdentifier {
+    idOrder: string; // o el tipo correcto de tu id
+  }
+export interface Order extends UniqueIdentifier{
+    product?: OrderProduct[];
     customer: string;
     dateOrder: string;
     timeOrder:  string;
     address: string;
     phone: string;
     details: string;
-    status: boolean;
+    status: string;
+}
+
+export interface OrderProduct {
+    idProduct?: string;
+    name: string;
+    price: number;
+    quantity: number;
 }
 
 export interface Product {

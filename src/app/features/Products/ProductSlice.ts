@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Product } from "../../../interfaces/Index";
 
-const initialState: Product[] = [];
+const initialState: Product[] = [
+    { idProduct: "1", name: "Jamones", price: 20 },
+    { idProduct: "2", name: "Galletas", price: 10 },
+    { idProduct: "3", name: "Flan", price: 20 }
+];
 
 export const ProductSlice = createSlice({
     name: 'products',

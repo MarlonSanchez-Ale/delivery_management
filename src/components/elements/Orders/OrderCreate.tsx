@@ -16,8 +16,7 @@ export default function OrderCreate() {
         resolver: zodResolver(OrderShema),
         defaultValues: {
             idOrder: "",
-            product: "",
-            quantity: 0,
+            product: [],
             customer: "",
             dateOrder: "",
             timeOrder: "",
@@ -26,7 +25,7 @@ export default function OrderCreate() {
             details: "",
         }
     });
-    const orders = useAppSelector(state => state.OrderManager)
+    const orders = useAppSelector(state => state.OrderManager.items)
     const products = useAppSelector(state => state.ProductManager)
     const params = useParams();
     const navigate = useNavigate()
@@ -54,7 +53,6 @@ export default function OrderCreate() {
             if (foundProduct) {
                 setValue("idOrder", foundProduct.idOrder)
                 setValue("product", foundProduct.product)
-                setValue("quantity", foundProduct.quantity);
                 setValue("customer", foundProduct.customer);
                 setValue("dateOrder", convertirFechaParaInputDate(foundProduct.dateOrder));
                 setValue("timeOrder", foundProduct.timeOrder);
@@ -67,16 +65,18 @@ export default function OrderCreate() {
 
     const onSubmit: SubmitHandler<Order> = (data) => {
         if (params.id) {
+            const dataWithoutId = { ...data };
+            dataWithoutId.idOrder = params.id;
             dispatch(editOrder({
-                idOrder: params.id,
-                ...data,
+                ...dataWithoutId
             }))
             navigate('/')
         } else {
+            const dataWithoutId = { ...data };
+            dataWithoutId.idOrder = v4();
             dispatch(addOrder({
-                idOrder: v4(),
-                ...data,
-                status: false
+                ...dataWithoutId,
+                status: "REGISTERED"
             }))
             navigate('/')
         }
@@ -86,8 +86,7 @@ export default function OrderCreate() {
         if (params.id) {
             navigate('/')
         } else {
-            setValue("product", "")
-            setValue("quantity", 0)
+            setValue("product", [])
             setValue("customer", "")
             setValue("dateOrder", "")
             setValue("timeOrder", "")
@@ -123,19 +122,6 @@ export default function OrderCreate() {
                             ))}
                         </select>
                         {errors.product?.message && (<p className='text-md text-red-400 font-light'>{errors.product?.message}</p>)}
-
-                    </div>
-                    <div className='flex flex-col w-full'>
-                        <label htmlFor='quantity' className='text-start text-base font-bold'>Quantity</label>
-                        <input
-                            className=' p-2 rounded-md w-full shadow-md text-slate-800'
-                            placeholder="How do you want?"
-                            type='number'
-                            id='quantity'
-                            required={true}
-                            {...register('quantity', { valueAsNumber: true })}
-                        />
-                        {errors.quantity?.message && (<p className='text-md text-red-400 font-light'>{errors.quantity?.message}</p>)}
                     </div>
                 </div>
 

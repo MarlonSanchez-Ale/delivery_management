@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { SideBar } from '../elements/NavigateElements/SideBar';
+import NavbarElement from '../elements/NavigateElements/NavBarElement';
 interface FormatLayoutProps {
     children: ReactNode;
 }
@@ -12,9 +13,9 @@ const FormatLayout: React.FC<FormatLayoutProps> = ({ children }) => {
                 {/* Contenido de la barra lateral */}
                 <SideBar />
             </div>
-
             {/* Contenido principal */}
             <div className="flex-1 p-5 overflow-y-auto sm:mb-5 md:mb-1">
+                <NavbarElement />
                 {children}
             </div>
         </div>

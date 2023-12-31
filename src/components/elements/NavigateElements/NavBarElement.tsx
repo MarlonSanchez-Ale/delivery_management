@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Card,
+  Navbar,
+  Collapse,
   Typography,
+  IconButton,
   List,
   ListItem,
   ListItemPrefix,
@@ -9,35 +11,82 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
+
 import {
   BuildingStorefrontIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
-import { ChevronRightIcon, ChevronDownIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
-import { Link, Router } from "react-router-dom";
 
-export function SideBar() {
+import {
+  ChevronRightIcon,
+  ChevronDownIcon,
+  Bars3Icon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { TbSunset2, TbMoonStars } from "react-icons/tb";
+import { Link } from "react-router-dom";
+
+function NavbarElement() {
+
+  const [openNav, setOpenNav] = React.useState(false);
   const [open, setOpen] = React.useState(0);
+  const [greeting, setGreeting] = useState<string>("")
+  const [subtitle, setSubtitle] = useState<string>("")
+  const [dayIcon, setDayIcon] = useState<boolean>(false);
 
   const handleOpen = (value: number) => {
     setOpen(open === value ? 0 : value);
   };
 
-  function NavList() {
+  const handleWindowResize = () =>
+    window.innerWidth >= 960 && setOpenNav(false);
 
+  React.useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    //Obteniendo la hora actual del sistema
+    const currentTime = new Date().getHours();
+
+    //Establecer un rango de horas para considerar en que momento del día se está
+    const startday = 6; // am
+    const startnight = 18 // pm
+
+    //Verificando si es de día o de noche
+    const time = currentTime >= startday && currentTime < startnight;
+
+    if (time) {
+      setDayIcon(time)
+      setGreeting("Good Evening")
+      setSubtitle("What deliveries do we have for today?")
+    } else {
+      setDayIcon(time)
+      setGreeting("Good Morning")
+      setSubtitle("Where are we going tomorrow?")
+    }
+
+  }, [])
+
+  function IconDay() {
+    if (dayIcon) {
+      return (
+        <TbSunset2 size={60} className="bg-yellow-500 rounded-full p-2" color="white" />
+      )
+    } else {
+      return (
+        <TbMoonStars size={60} className="bg-gray-500 rounded-full p-2" color="white" />
+      )
+    }
   }
 
-  return (
-    <Card placeholder="" className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-lg justify-around">
-      <div className="mt-5 p-3 ">
-        <RocketLaunchIcon className="mb-4 h-12 w-12 text-primary/80" />
-        <h3 className="mb-1 text-lg text-primary font-semibold">
-          Delivery manager
-        </h3>
-        <p className="font-normal text-gray-500">
-          This application manages your orders, products and gives you data of the orders delivered on the day.
-        </p>
-      </div>
+  function NavList() {
+    return (
       <List placeholder="">
         <Accordion
           placeholder=""
@@ -122,17 +171,50 @@ export function SideBar() {
           </AccordionBody>
         </Accordion>
       </List>
-      <div className=" p-3 ">
-        <h3 className="mb-1 text-lg text-center text-primary font-normal">
-          Developed by
-        </h3>
-        <p className="font-normal text-center text-gray-500">
-          Márlon Sánchez
-        </p>
-        <p className="font-normal text-center text-gray-500">
-          marlonsanchezal@gmail.com
-        </p>
+    );
+  }
+
+
+  return (
+
+    <Navbar placeholder="" className="mx-auto h-max max-w-screen-xl sticky top-0 z-10 px-6 py-3">
+      <div className="flex items-center justify-between text-blue-gray-900">
+        <div className="flex flex-row gap-3">
+          <IconDay />
+          <div className="">
+            <h3 className=" font-medium text-xl text-primary">
+              {greeting}
+            </h3>
+            <p className="font-normal text-gray-600">
+              {subtitle}
+            </p>
+          </div>
+        </div>
+
+        <div className="hidden lg:block">
+
+        </div>
+        <IconButton
+          placeholder=""
+          variant="text"
+          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+          ripple={false}
+          onClick={() => setOpenNav(!openNav)}
+        >
+          {openNav ? (
+            <XMarkIcon className="h-6 w-6" strokeWidth={2} />
+          ) : (
+            <Bars3Icon className="h-6 w-6" strokeWidth={2} />
+          )}
+        </IconButton>
       </div>
-    </Card>
+      <Collapse open={openNav}>
+        <div className="mt-5">
+          <NavList />
+        </div>
+      </Collapse>
+    </Navbar>
   );
 }
+
+export default NavbarElement;

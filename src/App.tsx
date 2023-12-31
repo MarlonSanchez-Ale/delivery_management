@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import './App.css';
-import { BrowserRouter, Form, Route, Routes } from 'react-router-dom';
+import {  Route, Routes } from 'react-router-dom';
 import OrderList from './components/elements/Orders/OrderList';
 import OrderCreate from './components/elements/Orders/OrderCreate';
 import ProductsList from './components/elements/Products/ProductsList';
@@ -12,7 +12,6 @@ function App() {
   return (
     <Fragment>
       <FormatLayout>
-        <BrowserRouter>
           <Routes>
             <Route path='/' element={<OrderList />} />
             <Route path='/products' element={<ProductsList />} />
@@ -21,7 +20,6 @@ function App() {
             <Route path='/order/create' element={<OrderCreate />} />
             <Route path='/order/create/:id' element={<OrderCreate />} />
           </Routes>
-        </BrowserRouter>
       </FormatLayout>
     </Fragment>
 

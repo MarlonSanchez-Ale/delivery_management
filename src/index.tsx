@@ -7,6 +7,7 @@ import { store } from './app/store';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from "@material-tailwind/react";
+import { BrowserRouter } from 'react-router-dom';
 
 const persistor = persistStore(store);
 const root = ReactDOM.createRoot(
@@ -18,7 +19,9 @@ root.render(
     <ThemeProvider>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </PersistGate>
       </Provider>
     </ThemeProvider>
