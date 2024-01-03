@@ -19,16 +19,6 @@ function ValidateDate(dateOrder: Date): boolean {
 }
 
 export const OrderShema = z.object({
-    product: z.string({
-        required_error: "Product is required"
-    })
-        .refine(value => value !== "Select...", {
-            message: "You must select a product!"
-        }),
-    quantity: z.number({
-        required_error: "Quantity is required"
-    })
-        .positive({ message: "Quantity cannot be less than or equal to zero" }),
     customer: z.string({
         required_error: "Customer is required"
     })

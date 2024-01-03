@@ -4,7 +4,6 @@ import {
     SortableContext,
     arrayMove,
     sortableKeyboardCoordinates,
-    verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import {
     Breadcrumbs,
@@ -15,14 +14,13 @@ import { Order } from "../../../interfaces/Index";
 import CardOrder from './CardOrder';
 
 export default function OrderList() {
-    const orders = useAppSelector(state => state.OrderManager.items) || [];
+    const orders = useAppSelector(state => state.OrderManager.items);
     const itemsArray: (UniqueIdentifier | { id: UniqueIdentifier })[] = orders.map(order => ({
         id: order.idOrder,
         // otras propiedades si es necesario
     }));
     const filter = useAppSelector(state => state.OrderManager.filter)
     const dispatch = useAppDispatch();
-    // const [items, setItems] = useState<Order[]>(orders);
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -31,26 +29,30 @@ export default function OrderList() {
     );
 
 
-
     const handleFilter = (filter: string) => {
         dispatch(setFilter(filter))
     }
 
 
-    function handleDragEnd(event: { active: any; over: any }) {
-        const { active, over } = event;
-
-        if (active.id !== over.id) {
-            const oldIndex = orders.findIndex((item) => item.idOrder === active.id);
-            const newIndex = orders.findIndex((item) => item.idOrder === over.id);
-            if (oldIndex !== -1 && newIndex !== -1) {
-                dispatch(reorderOrders(arrayMove(orders, oldIndex, newIndex)));
-            }
-        }
-    }
+   
 
     return (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={({ active, over }) => {
+                try {
+                    if (over && active.id !== over?.id) {
+                        const activeIndex = orders.findIndex(({ idOrder }) => idOrder === active.id);
+                        const overIndex = orders.findIndex(({ idOrder }) => idOrder === over.id);
+
+                        dispatch(reorderOrders(arrayMove(orders, activeIndex, overIndex)));
+                    }
+                } catch (error) {
+                    console.log('Error during drag end', error)
+                }
+            }}
+        >
             <div className='h-full mt-5'>
                 <div className='flex flex-col gap-3 justify-center p-6'>
                     <h1 className="text-3xl text-primary font-bold text-center">
@@ -66,21 +68,18 @@ export default function OrderList() {
                     </Breadcrumbs>
                 </div>
                 <div className='flex flex-col justify-center gap-5 p-5 my-5' >
-                    <SortableContext items={itemsArray} strategy={verticalListSortingStrategy}>
+                    <SortableContext items={itemsArray} >
                         {orders
                             .filter((order) => (filter ? order?.status.includes(filter) : true))
                             .map((order: Order, index: number) => (
                                 <CardOrder
-                                    key={index}
+                                    key={order.idOrder}
                                     data={order}
                                     index={index}
                                 />
                             ))}
                     </SortableContext>
-
                 </div>
-
-
             </div>
         </DndContext>
     )

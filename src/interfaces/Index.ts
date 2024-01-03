@@ -13,10 +13,9 @@ export interface Order extends UniqueIdentifier{
 }
 
 export interface OrderProduct {
-    idProduct?: string;
     name: string;
-    price: number;
     quantity: number;
+    total: number;
 }
 
 export interface Product {

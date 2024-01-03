@@ -14,9 +14,9 @@ interface Initial {
 const initialState: Initial = {
     items: [
         {
-            idOrder: v4(),
+            idOrder: "1",
             product: [
-                { idProduct: "1", name: "Jamones", price: 20, quantity: 2 }
+                { name: "Jamones", quantity: 2, total: 20 }
             ],
             customer: "Juan",
             dateOrder: "12/02/23",
@@ -28,10 +28,10 @@ const initialState: Initial = {
 
         },
         {
-            idOrder: v4(),
+            idOrder: "2",
             product: [
-                { idProduct: "2", name: "Galletas", price: 10, quantity: 3 },
-                { idProduct: "3", name: "Flan", price: 20, quantity: 4 }
+                { name: "Galletas", quantity: 3, total: 10 },
+                { name: "Flan", quantity: 4, total: 20 }
             ],
             customer: "Juan",
             dateOrder: "12/02/23",
