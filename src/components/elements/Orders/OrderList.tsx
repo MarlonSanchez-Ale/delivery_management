@@ -22,19 +22,23 @@ export default function OrderList() {
     const filter = useAppSelector(state => state.OrderManager.filter)
     const dispatch = useAppDispatch();
     const sensors = useSensors(
-        useSensor(PointerSensor),
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 8,
+              },
+        }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
-
 
     const handleFilter = (filter: string) => {
         dispatch(setFilter(filter))
     }
 
 
-   
+
+
 
     return (
         <DndContext
@@ -62,7 +66,7 @@ export default function OrderList() {
                 </div>
                 <div className='flex justify-center'>
                     <Breadcrumbs placeholder="" className=' shadow-md' fullWidth>
-                        <p onClick={() => handleFilter("REGISTERED")}>All</p>
+                        <p onClick={() => handleFilter("")}>All</p>
                         <p onClick={() => handleFilter("IN PROCCESS")}>In Process</p>
                         <p onClick={() => handleFilter("COMPLETED")}>Delivered</p>
                     </Breadcrumbs>

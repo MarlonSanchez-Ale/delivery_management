@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Order } from "../../../interfaces/Index";
-import { v4 } from "uuid";
 //Datos de los pedidos 
 // Producto, Cantidad, nombre, telefono, especificaciones, estado
 
@@ -24,7 +23,7 @@ const initialState: Initial = {
             address: "Por ahí",
             phone: "85588662",
             details: "Detalles",
-            status: "REGISTERED"
+            status: "NOT START"
 
         },
         {
@@ -39,7 +38,7 @@ const initialState: Initial = {
             address: "Por ahí",
             phone: "85588662",
             details: "Detalles",
-            status: "REGISTERED"
+            status: "IN PROCCESS"
 
         }
     ],
@@ -69,15 +68,19 @@ export const OrderSlice = createSlice({
                 //foundOrder.idProduct = idProduct;
             }
         },
-        editState: (state, action: PayloadAction<Order>) => {
-            const { idOrder, status } = action.payload;
+        editState: (state, action: PayloadAction<string>) => {
+            const idOrder = action.payload;
             const foundOrder = state.items.find(order => order.idOrder === idOrder);
+            console.log(foundOrder?.status)
 
             if (foundOrder) {
-                if (status === "REGISTERED") {
+                if (foundOrder.status === "NOT START") {
                     foundOrder.status = "IN PROCCESS";
                 }
-                if (status === "IN PROCCESS") {
+                else if (foundOrder.status === "IN PROCCESS") {
+                    foundOrder.status = "COMPLETED"
+                }
+                else if (foundOrder.status === "COMPLETED") {
                     foundOrder.status = "COMPLETED"
                 }
             }
