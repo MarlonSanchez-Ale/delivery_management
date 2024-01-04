@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Order } from '../../../interfaces/Index'
 import { OrderProduct } from '../../../interfaces/Index';
 import { MdDeliveryDining, MdCalendarMonth, MdAccessTime, MdFormatListBulleted, MdCheckCircle, MdPhone } from "react-icons/md";
@@ -7,10 +6,7 @@ import {
   List,
   ListItem,
   ListItemSuffix,
-  Chip,
-  Accordion,
-  AccordionHeader,
-  AccordionBody
+  Chip
 } from "@material-tailwind/react";
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -22,7 +18,7 @@ type Props = {
 
 export default function CardOrder(props: Props) {
 
-  const { data, index } = props;
+  const { data } = props;
   const { idOrder, customer, product, dateOrder, timeOrder, details, phone, address, status } = data;
   //idOrder, customer, product, dateOrder, timeOrder, details, phone,  address, status
  // const [open, setOpen] = useState<number>(0);
