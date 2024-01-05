@@ -71,7 +71,6 @@ export const OrderSlice = createSlice({
         editState: (state, action: PayloadAction<string>) => {
             const idOrder = action.payload;
             const foundOrder = state.items.find(order => order.idOrder === idOrder);
-            console.log(foundOrder?.status)
 
             if (foundOrder) {
                 if (foundOrder.status === "NOT START") {

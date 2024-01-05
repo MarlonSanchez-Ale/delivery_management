@@ -93,7 +93,7 @@ export default function OrderCreate() {
                 //console.log(dataWithoutId)
               dispatch(addOrder({
                      ...dataWithoutId,
-                     status: "REGISTERED"
+                     status: "NOT START"
                  }))
                 navigate('/')
             }
