@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, IconButton, Card, List, ListItem, ListItemSuffix } from "@material-tailwind/react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,11 +6,12 @@ import { Order, OrderProduct } from "../../../../interfaces/Index";
 import { useAppSelector, useAppDispatch } from "../../../../app/features/service/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OrderShema } from "../../../schema/OrderShema";
-import { addOrder, editOrder } from "../../../../app/features/orders/OrderSlice";
+import { addOrder } from "../../../../app/features/orders/OrderSlice";
 import { v4 } from "uuid";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import ProductSelect from "./ProductSelect";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { AlertContext } from "../../../../app/AlertWrapper/Context/AlertContext";
 
 export default function OrderCreate() {
 
@@ -27,28 +28,13 @@ export default function OrderCreate() {
             details: "",
         }
     });
-    const orders = useAppSelector(state => state.OrderManager.items)
+    const { alertSuccess, alertError } = useContext(AlertContext)
     const [orderProduct, setOrderProduct] = useState<OrderProduct[]>([]);
     const products = useAppSelector(state => state.ProductManager)
     const params = useParams();
     const navigate = useNavigate()
     const dispatch = useAppDispatch();
     const [viewDetails, setViewDetails] = useState<boolean>(false)
-
-    function convertirFechaParaInputDate(fechaString: string): string {
-        // Parsea el string a un objeto Date
-        const fecha = new Date(fechaString);
-
-        // Obtiene los componentes de la fecha
-        const year = fecha.getFullYear();
-        const month = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
-        const day = String(fecha.getDate()).padStart(2, '0');
-
-        // Formatea la fecha en el formato yyyy-MM-dd
-        const fechaFormateada = `${year}-${month}-${day}`;
-
-        return fechaFormateada;
-    }
 
     useEffect(() => {
         if (orderProduct.length) {
@@ -58,36 +44,10 @@ export default function OrderCreate() {
         }
     }, [orderProduct, viewDetails])
 
-    useEffect(() => {
-        if (params.id) {
-            const foundProduct = orders?.find((p) => p.idOrder === params?.id);
-
-            if (foundProduct) {
-                setValue("idOrder", foundProduct.idOrder)
-                setValue("customer", foundProduct.customer);
-                setValue("dateOrder", convertirFechaParaInputDate(foundProduct.dateOrder));
-                setValue("timeOrder", foundProduct.timeOrder);
-                setValue("address", foundProduct.address);
-                setValue("phone", foundProduct.phone);
-                setValue("details", foundProduct.details);
-
-                if (foundProduct.product) {
-                    setOrderProduct(foundProduct?.product)
-                }
-            }
-        }
-    }, [params.id, orders, setValue])
 
     const onSubmit: SubmitHandler<Order> = (data) => {
-        if (params.id) {
-            const dataWithoutId = { ...data };
-            dataWithoutId.idOrder = params.id;
-            dataWithoutId.product = orderProduct;
-            dispatch(editOrder({
-                ...dataWithoutId
-            }))
-            navigate('/')
-        } else {
+
+        try {
             if (orderProduct.length) {
                 const dataWithoutId = { ...data };
                 dataWithoutId.idOrder = v4();
@@ -96,10 +56,25 @@ export default function OrderCreate() {
                     ...dataWithoutId,
                     status: "NOT START"
                 }))
-                navigate('/')
+                alertSuccess({
+                    title: 'Order created',
+                    text: 'Successfully registered order',
+                })
+                handleCancel()
             }
-            else { console.log("Hay un error") }
+            else {
+                alertError({
+                    title: 'Update Error',
+                    text: "Failed create, "
+                })
+            }
+        } catch (error) {
+            alertError({
+                title: 'Update Error',
+                text: `Failed update: ${error}`
+            })
         }
+
     }
 
     const handleCancel = () => {
@@ -113,6 +88,7 @@ export default function OrderCreate() {
             setValue("address", "")
             setValue("phone", "")
             setValue("details", "")
+            setOrderProduct([])
         }
     }
 

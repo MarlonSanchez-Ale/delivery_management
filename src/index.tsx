@@ -8,6 +8,7 @@ import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from "@material-tailwind/react";
 import { BrowserRouter } from 'react-router-dom';
+import AlertProvider from './app/AlertWrapper/provider/AlertProvider';
 
 const persistor = persistStore(store);
 const root = ReactDOM.createRoot(
@@ -20,7 +21,9 @@ root.render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <BrowserRouter>
-            <App />
+            <AlertProvider>
+              <App />
+            </AlertProvider>
           </BrowserRouter>
         </PersistGate>
       </Provider>

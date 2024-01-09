@@ -14,7 +14,7 @@ import {
   ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
-import { Link, Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export function SideBar() {
   const [open, setOpen] = React.useState(0);
@@ -22,10 +22,6 @@ export function SideBar() {
   const handleOpen = (value: number) => {
     setOpen(open === value ? 0 : value);
   };
-
-  function NavList() {
-
-  }
 
   return (
     <Card placeholder="" className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-lg justify-around">

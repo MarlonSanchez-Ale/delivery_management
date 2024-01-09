@@ -1,9 +1,8 @@
-import { configureStore, combineReducers, applyMiddleware } from "@reduxjs/toolkit";
+import { configureStore, combineReducers,  } from "@reduxjs/toolkit";
 import OrderSlice from "./features/orders/OrderSlice";
 import ProductSlice from "./features/Products/ProductSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
-import thunk from 'redux-thunk'
 
 const persistConfig = {
     key: 'root',

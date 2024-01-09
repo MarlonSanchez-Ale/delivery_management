@@ -25,6 +25,7 @@ import { useAppDispatch } from '../../../../app/features/service/hooks';
 import { deleteOrder, editState } from '../../../../app/features/orders/OrderSlice';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DateValidate } from '../../../../app/Validation/Validation';
 
 type Props = {
   data: Order;
@@ -86,9 +87,15 @@ export default function CardOrder(props: Props) {
       <div className='flex flex-col justify-start gap-3'>
         <div className='flex flex-row justify-between'>
           <MdDeliveryDining size={40} color='white' className='p-1 rounded-full bg-primary shadow-md my-5' />
-          <IconButton placeholder="" onClick={() => navigate(`/order/edit/${idOrder}`)} variant='text'>
-            <MdEdit size={35} color='white' className='p-1 rounded-full bg-gray-500 shadow-md my-5' />
-          </IconButton>
+          {DateValidate(dateFormat) ? (
+            <IconButton placeholder="" onClick={() => navigate(`/order/edit/${idOrder}`)} variant='text'>
+              <MdEdit size={35} color='white' className='p-1 rounded-full bg-gray-500 shadow-md my-5' />
+            </IconButton>
+          ) : (
+            <div className='flex flex-col justify-center p-2 bg-yellow-100 rounded-md shadow-md'>
+              <p className='font-normal text-sm text-yellow-800'>Expired order</p>
+            </div>
+          )}
         </div>
         <Typography placeholder="" variant="h5" color="gray" className="mb-2">
           {customer}

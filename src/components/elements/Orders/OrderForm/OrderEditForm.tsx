@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import {
     Tabs,
     TabsHeader,
@@ -22,7 +22,7 @@ import { editOrder } from "../../../../app/features/orders/OrderSlice";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import ProductSelect from './ProductSelect';
 import { FaRegTrashAlt } from "react-icons/fa";
-import AlertElement from '../../Alert/AlertElement';
+import { AlertContext } from '../../../../app/AlertWrapper/Context/AlertContext';
 
 interface TabsProps {
     label: string;
@@ -46,6 +46,9 @@ export default function OrderEditForm() {
         },
     ];
 
+    const { alertSuccess, alertError } = useContext(AlertContext)
+
+
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<Order>({
         resolver: zodResolver(OrderShema),
     });
@@ -53,7 +56,6 @@ export default function OrderEditForm() {
     const orders = useAppSelector(state => state.OrderManager.items)
     const products = useAppSelector(state => state.ProductManager)
     const [orderProduct, setOrderProduct] = useState<OrderProduct[]>([]);
-    const [alert, setAlert] = useState<boolean>(false)
     const params = useParams();
     const navigate = useNavigate()
     const dispatch = useAppDispatch();
@@ -140,15 +142,25 @@ export default function OrderEditForm() {
 
     const onSubmit: SubmitHandler<Order> = (data) => {
         if (params.id) {
-            const dataWithoutId = { ...data };
-            dataWithoutId.idOrder = params.id;
-            dataWithoutId.product = orderProduct;
-            //setAlert(false)
-            dispatch(editOrder({
-                ...dataWithoutId
-            }))
-            setAlert(true)
-            navigate('/')
+            try {
+                const dataWithoutId = { ...data };
+                dataWithoutId.idOrder = params.id;
+                dataWithoutId.product = orderProduct;
+                dispatch(editOrder({
+                    ...dataWithoutId
+                }))
+
+                //Calling Alert function
+                alertSuccess({
+                    title: 'Update of Order',
+                    text: 'Successfully updated order',
+                })
+            } catch (error) {
+                alertError({
+                    title: 'Update Error',
+                    text: `Failed update: ${error}`
+                })
+            }
         }
     }
 
@@ -169,9 +181,6 @@ export default function OrderEditForm() {
                     <IoReturnUpBackSharp size={20} color="white" />
                 </IconButton>
             </div>
-
-
-            {alert ? (<AlertElement message='update is done' active={alert} />) : (<></>)}
 
             <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                 <div className='w-full'>
