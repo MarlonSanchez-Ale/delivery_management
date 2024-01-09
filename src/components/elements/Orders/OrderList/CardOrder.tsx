@@ -1,5 +1,5 @@
-import { Order } from '../../../interfaces/Index'
-import { OrderProduct } from '../../../interfaces/Index';
+import { Order } from '../../../../interfaces/Index';
+import { OrderProduct } from '../../../../interfaces/Index';
 import {
   MdDeliveryDining,
   MdCalendarMonth,
@@ -21,9 +21,10 @@ import {
 } from "@material-tailwind/react";
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useAppDispatch } from '../../../app/features/service/hooks';
-import { deleteOrder, editState } from '../../../app/features/orders/OrderSlice';
+import { useAppDispatch } from '../../../../app/features/service/hooks';
+import { deleteOrder, editState } from '../../../../app/features/orders/OrderSlice';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   data: Order;
@@ -52,6 +53,7 @@ export default function CardOrder(props: Props) {
 
   const [colorbg, setColorbg] = useState<string>("bg-primary")
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const handleStateOrder = (id: string) => {
     dispatch(editState(id))
@@ -84,7 +86,7 @@ export default function CardOrder(props: Props) {
       <div className='flex flex-col justify-start gap-3'>
         <div className='flex flex-row justify-between'>
           <MdDeliveryDining size={40} color='white' className='p-1 rounded-full bg-primary shadow-md my-5' />
-          <IconButton placeholder="" onClick={() => console.log("Dando click")} variant='text'>
+          <IconButton placeholder="" onClick={() => navigate(`/order/edit/${idOrder}`)} variant='text'>
             <MdEdit size={35} color='white' className='p-1 rounded-full bg-gray-500 shadow-md my-5' />
           </IconButton>
         </div>

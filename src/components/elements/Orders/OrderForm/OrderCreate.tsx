@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, IconButton, Card, List, ListItem, ListItemSuffix } from "@material-tailwind/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Order, OrderProduct } from "../../../interfaces/Index";
-import { useAppSelector, useAppDispatch } from "../../../app/features/service/hooks";
+import { Order, OrderProduct } from "../../../../interfaces/Index";
+import { useAppSelector, useAppDispatch } from "../../../../app/features/service/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OrderShema } from "../../schema/OrderShema";
-import { addOrder, editOrder } from "../../../app/features/orders/OrderSlice";
+import { OrderShema } from "../../../schema/OrderShema";
+import { addOrder, editOrder } from "../../../../app/features/orders/OrderSlice";
 import { v4 } from "uuid";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import ProductSelect from "./ProductSelect";
@@ -64,13 +64,16 @@ export default function OrderCreate() {
 
             if (foundProduct) {
                 setValue("idOrder", foundProduct.idOrder)
-                setValue("product", foundProduct.product)
                 setValue("customer", foundProduct.customer);
                 setValue("dateOrder", convertirFechaParaInputDate(foundProduct.dateOrder));
                 setValue("timeOrder", foundProduct.timeOrder);
                 setValue("address", foundProduct.address);
                 setValue("phone", foundProduct.phone);
                 setValue("details", foundProduct.details);
+
+                if (foundProduct.product) {
+                    setOrderProduct(foundProduct?.product)
+                }
             }
         }
     }, [params.id, orders, setValue])
@@ -79,22 +82,20 @@ export default function OrderCreate() {
         if (params.id) {
             const dataWithoutId = { ...data };
             dataWithoutId.idOrder = params.id;
+            dataWithoutId.product = orderProduct;
             dispatch(editOrder({
                 ...dataWithoutId
             }))
             navigate('/')
         } else {
-
-            //Posiblemente acá    se esté dando un error al ingresar este arreglo por el orden de sus componentes
             if (orderProduct.length) {
                 const dataWithoutId = { ...data };
                 dataWithoutId.idOrder = v4();
                 dataWithoutId.product = orderProduct;
-                //console.log(dataWithoutId)
-              dispatch(addOrder({
-                     ...dataWithoutId,
-                     status: "NOT START"
-                 }))
+                dispatch(addOrder({
+                    ...dataWithoutId,
+                    status: "NOT START"
+                }))
                 navigate('/')
             }
             else { console.log("Hay un error") }
@@ -127,6 +128,24 @@ export default function OrderCreate() {
         }
     };
 
+    const SubtractingOrder = (productName: string, price: number) => {
+        const existingItemIndex = orderProduct.findIndex(item => item.name === productName);
+
+        if (existingItemIndex !== -1) {
+            const updateOrder = [...orderProduct];
+            if (updateOrder[existingItemIndex].quantity > 1) {
+                updateOrder[existingItemIndex].quantity -= 1
+                setOrderProduct(updateOrder)
+            } else {
+                const updateOrder = orderProduct.filter(item => item.name !== productName);
+                setOrderProduct(updateOrder);
+            }
+
+        } else {
+            setOrderProduct(prevOrder => [...prevOrder, { name: productName, quantity: 1, total: price }]);
+        }
+    }
+
     const removeFromOrder = (name: string) => {
         const updatedOrder = orderProduct.filter((item) => item.name !== name);
         setOrderProduct(updatedOrder);
@@ -134,29 +153,6 @@ export default function OrderCreate() {
 
     return (
         <div className='grid place-items-center p-10 gap-5 w-full'>
-            {viewDetails && (
-                <Card placeholder="" className="w-full border p-4 mb-4">
-                    <h2>Product's Details</h2>
-                    <List placeholder="">
-                        {orderProduct.map((item, index) => (
-                            <ListItem placeholder="" ripple={false} className="py-1 pr-1 pl-4" key={index}>
-                                <div className='flex flex-row justify-between gap-10'>
-                                    <h2 className='font-semibold text-center'>{item.name}</h2>
-                                    <p className=''>Quantity: {item.quantity}</p>
-                                    <p className=''>Total: ${(item.quantity * item.total).toFixed(2)}</p>
-                                </div>
-                                <ListItemSuffix placeholder="">
-                                    <IconButton placeholder="" variant="text" color="blue-gray" onClick={() => removeFromOrder(item.name)}>
-                                        <FaRegTrashAlt size={20} />
-                                    </IconButton>
-                                </ListItemSuffix>
-                            </ListItem>
-
-                        ))}
-                    </List>
-                </Card>
-            )}
-
             <form className='flex flex-col justify-center gap-10 w-full bg-white p-10 rounded-md shadow-md' onSubmit={handleSubmit(onSubmit)}>
                 <div className='flex flex-col gap-3 justify-center '>
                     <h1 className="text-3xl text-primary font-bold underline text-center">
@@ -259,13 +255,36 @@ export default function OrderCreate() {
                     </div>
                 </div>
 
-                <ProductSelect products={products} onAddToOrder={addToOrder} />
+                <ProductSelect products={products} onAddToOrder={addToOrder} onSubtracttoOrder={SubtractingOrder} />
 
                 <div className='flex flex-row justify-center gap-5'>
                     <Button placeholder="" className='bg-primary' type='submit'>SAVE</Button>
                     <Button placeholder="" className='bg-details' type='button' onClick={handleCancel}>CANCEL</Button>
                 </div>
             </form >
+
+            {viewDetails && (
+                <Card placeholder="" className="w-full border p-4 mb-4">
+                    <h2>Product's Details</h2>
+                    <List placeholder="">
+                        {orderProduct.map((item, index) => (
+                            <ListItem placeholder="" ripple={false} className="py-1 pr-1 pl-4" key={index}>
+                                <div className='flex flex-row justify-between gap-10'>
+                                    <h2 className='font-semibold text-center'>{item.name}</h2>
+                                    <p className=''>Quantity: {item.quantity}</p>
+                                    <p className=''>Total: ${(item.quantity * item.total).toFixed(2)}</p>
+                                </div>
+                                <ListItemSuffix placeholder="">
+                                    <IconButton placeholder="" variant="text" color="blue-gray" onClick={() => removeFromOrder(item.name)}>
+                                        <FaRegTrashAlt size={20} />
+                                    </IconButton>
+                                </ListItemSuffix>
+                            </ListItem>
+
+                        ))}
+                    </List>
+                </Card>
+            )}
         </div>
     );
 }

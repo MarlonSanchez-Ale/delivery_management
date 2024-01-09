@@ -56,7 +56,7 @@ export const OrderSlice = createSlice({
             state.items.push(action.payload)
         },
         editOrder: (state, action: PayloadAction<Order>) => {
-            const { idOrder, customer, address, phone, details } = action.payload;
+            const { idOrder, customer, address, phone, product, details } = action.payload;
 
             const foundOrder = state.items.find(order => order.idOrder === idOrder);
 
@@ -65,7 +65,7 @@ export const OrderSlice = createSlice({
                 foundOrder.address = address;
                 foundOrder.phone = phone;
                 foundOrder.details = details;
-                //foundOrder.idProduct = idProduct;
+                foundOrder.product = product;
             }
         },
         editState: (state, action: PayloadAction<string>) => {

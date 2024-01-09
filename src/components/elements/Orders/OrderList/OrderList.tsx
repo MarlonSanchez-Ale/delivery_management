@@ -17,9 +17,9 @@ import {
     Breadcrumbs,
     Button,
 } from "@material-tailwind/react";
-import { deleteAll, reorderOrders, setFilter } from '../../../app/features/orders/OrderSlice';
-import { useAppDispatch, useAppSelector } from "../../../app/features/service/hooks";
-import { Order } from "../../../interfaces/Index";
+import { deleteAll, reorderOrders, setFilter } from '../../../../app/features/orders/OrderSlice';
+import { useAppDispatch, useAppSelector } from "../../../../app/features/service/hooks";
+import { Order } from "../../../../interfaces/Index";
 import CardOrder from './CardOrder';
 import { MdOutlineDelete } from 'react-icons/md';
 
@@ -76,7 +76,7 @@ export default function OrderList() {
                 </div>
                 <div className='flex justify-center'>
                     <Breadcrumbs placeholder="" className=' shadow-md' fullWidth>
-                        <p onClick={() => handleFilter("")}>All</p>
+                        <p defaultChecked onClick={() => handleFilter("")}>All</p>
                         <p onClick={() => handleFilter("IN PROCCESS")}>In Process</p>
                         <p onClick={() => handleFilter("COMPLETED")}>Delivered</p>
                     </Breadcrumbs>
@@ -115,7 +115,7 @@ export default function OrderList() {
                     }
 
                     {orders && !orders.length && (
-                        <div className={`bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md my-5`} role="alert">
+                        <div className={`bg-red-100 border-t-4 border-red-500 rounded-b px-4 py-3 shadow-md my-5`} role="alert">
                             <div className="flex">
                                 <div className="py-1">
                                     <svg className="fill-current h-6 w-6 text-primary mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
