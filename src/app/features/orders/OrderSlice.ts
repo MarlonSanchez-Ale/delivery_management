@@ -10,19 +10,23 @@ interface Initial {
     filter: string
 }
 
+const today = new Date();
+const dateOrder = today.toDateString()
+
 const initialState: Initial = {
     items: [
         {
             idOrder: "1",
             product: [
-                { name: "Jamones", quantity: 2, total: 20 }
+                { name: "Arroz de leche", quantity: 2, total: 40 },
+                { name: "Flan", quantity: 2, total: 40 }
             ],
-            customer: "Juan",
-            dateOrder: "12/02/23",
+            customer: "Juan Alejandro Gaitan",
+            dateOrder,
             timeOrder: "10:30",
-            address: "Por ahí",
+            address: "Parque central, dos cuadras al norte y una cuadra al sur.",
             phone: "85588662",
-            details: "Detalles",
+            details: "Casa color rojo",
             status: "NOT START"
 
         },
@@ -32,12 +36,12 @@ const initialState: Initial = {
                 { name: "Galletas", quantity: 3, total: 10 },
                 { name: "Flan", quantity: 4, total: 20 }
             ],
-            customer: "Juan",
-            dateOrder: "12/02/23",
+            customer: "Arturo Altamirano",
+            dateOrder,
             timeOrder: "10:30",
-            address: "Por ahí",
+            address: "Iglesia San Miguel dos cuadras al sur y una al este.",
             phone: "85588662",
-            details: "Detalles",
+            details: "Casa color verde",
             status: "IN PROCCESS"
 
         }

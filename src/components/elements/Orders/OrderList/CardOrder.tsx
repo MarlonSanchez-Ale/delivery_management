@@ -81,20 +81,18 @@ export default function CardOrder(props: Props) {
   return (
 
     <div
-      className='flex flex-col bg-white rounded-md shadow-md p-5 gap-8 relative'
+      className='flex flex-col bg-white rounded-md shadow-md p-5 gap-8 relative sm:my-5'
       ref={setNodeRef} style={style} {...attributes} {...listeners}
     >
       <div className='flex flex-col justify-start gap-3'>
-        <div className='flex flex-row justify-between'>
+        <div className='flex justify-between'>
           <MdDeliveryDining size={40} color='white' className='p-1 rounded-full bg-primary shadow-md my-5' />
           {DateValidate(dateFormat) ? (
             <IconButton placeholder="" onClick={() => navigate(`/order/edit/${idOrder}`)} variant='text'>
               <MdEdit size={35} color='white' className='p-1 rounded-full bg-gray-500 shadow-md my-5' />
             </IconButton>
           ) : (
-            <div className='flex flex-col justify-center p-2 bg-yellow-100 rounded-md shadow-md'>
-              <p className='font-normal text-sm text-yellow-800'>Expired order</p>
-            </div>
+            <Chip variant="ghost" value="Expired order" />
           )}
         </div>
         <Typography placeholder="" variant="h5" color="gray" className="mb-2">
@@ -166,10 +164,3 @@ export default function CardOrder(props: Props) {
     </div>
   )
 }
-
-/*
-<div className='flex flex-row justify-center gap-2 bg-yellow-200 p-1 rounded-md shadow-sm'>
-          <MdFormatListBulleted size={20} color='gray' />
-          <p>{status}</p>
-        </div>
-*/

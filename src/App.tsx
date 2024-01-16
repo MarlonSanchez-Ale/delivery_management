@@ -2,11 +2,11 @@ import { Fragment } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import OrderList from './components/elements/Orders/OrderList/OrderList';
-import OrderCreate from './components/elements/Orders/OrderForm/OrderCreate';
+import OrderCreate from './components/elements/Orders/OrderForm/Create/OrderCreate';
 import ProductsList from './components/elements/Products/ProductsList';
 import ProductsForm from './components/elements/Products/ProductsForm';
 import FormatLayout from './components/layout/FormatLayout';
-import OrderEditForm from './components/elements/Orders/OrderForm/OrderEditForm';
+import OrderEditForm from './components/elements/Orders/OrderForm/Edit/OrderEditForm';
 
 function App() {
 

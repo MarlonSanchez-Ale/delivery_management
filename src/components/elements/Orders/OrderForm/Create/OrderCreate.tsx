@@ -2,16 +2,16 @@ import { useEffect, useState, useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, IconButton, Card, List, ListItem, ListItemSuffix } from "@material-tailwind/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Order, OrderProduct } from "../../../../interfaces/Index";
-import { useAppSelector, useAppDispatch } from "../../../../app/features/service/hooks";
+import { Order, OrderProduct } from "../../../../../interfaces/Index";
+import { useAppSelector, useAppDispatch } from "../../../../../app/features/service/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OrderShema } from "../../../schema/OrderShema";
-import { addOrder } from "../../../../app/features/orders/OrderSlice";
+import { OrderShema } from "../../../../schema/OrderShema";
+import { addOrder } from "../../../../../app/features/orders/OrderSlice";
 import { v4 } from "uuid";
 import { IoReturnUpBackSharp } from "react-icons/io5";
-import ProductSelect from "./ProductSelect";
+import ProductSelect from "../ProductSelect";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { AlertContext } from "../../../../app/AlertWrapper/Context/AlertContext";
+import { AlertContext } from "../../../../../app/AlertWrapper/Context/AlertContext";
 
 export default function OrderCreate() {
 
@@ -128,7 +128,7 @@ export default function OrderCreate() {
     };
 
     return (
-        <div className='grid place-items-center p-10 gap-5 w-full'>
+        <div className='grid place-items-center gap-5 w-full sm:mt-5 md:p-10'>
             <form className='flex flex-col justify-center gap-10 w-full bg-white p-10 rounded-md shadow-md' onSubmit={handleSubmit(onSubmit)}>
                 <div className='flex flex-col gap-3 justify-center '>
                     <h1 className="text-3xl text-primary font-bold underline text-center">
@@ -245,7 +245,7 @@ export default function OrderCreate() {
                     <List placeholder="">
                         {orderProduct.map((item, index) => (
                             <ListItem placeholder="" ripple={false} className="py-1 pr-1 pl-4" key={index}>
-                                <div className='flex flex-row justify-between gap-10'>
+                                <div className='flex flex-row justify-around gap-20 sm:text-sm md:text-md'>
                                     <h2 className='font-semibold text-center'>{item.name}</h2>
                                     <p className=''>Quantity: {item.quantity}</p>
                                     <p className=''>Total: ${(item.quantity * item.total).toFixed(2)}</p>

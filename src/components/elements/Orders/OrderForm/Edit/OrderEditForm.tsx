@@ -14,15 +14,15 @@ import {
 } from "@material-tailwind/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Order, OrderProduct } from "../../../../interfaces/Index";
-import { useAppSelector, useAppDispatch } from "../../../../app/features/service/hooks";
+import { Order, OrderProduct } from '../../../../../interfaces/Index';
+import { useAppDispatch, useAppSelector } from '../../../../../app/features/service/hooks';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OrderShema } from "../../../schema/OrderShema";
-import { editOrder } from "../../../../app/features/orders/OrderSlice";
+import { OrderShema } from '../../../../schema/OrderShema';
+import { editOrder } from '../../../../../app/features/orders/OrderSlice';
 import { IoReturnUpBackSharp } from "react-icons/io5";
-import ProductSelect from './ProductSelect';
+import ProductSelect from '../ProductSelect';
 import { FaRegTrashAlt } from "react-icons/fa";
-import { AlertContext } from '../../../../app/AlertWrapper/Context/AlertContext';
+import { AlertContext } from '../../../../../app/AlertWrapper/Context/AlertContext';
 
 interface TabsProps {
     label: string;
@@ -167,7 +167,7 @@ export default function OrderEditForm() {
 
 
     return (
-        <div className='grid place-items-center p-10 gap-5 w-full'>
+        <div className='grid place-items-center gap-5 sm:mt-5 md:p-5 md: w-full'>
 
             <div className='flex flex-col gap-3 justify-center '>
                 <h1 className="text-3xl text-primary font-bold underline text-center">
@@ -187,7 +187,7 @@ export default function OrderEditForm() {
                     <Tabs id="custom-animation" value="Customer" >
                         <TabsHeader placeholder="">
                             {data.map(({ label, value }) => (
-                                <Tab placeholder="" key={value} value={value}>
+                                <Tab placeholder="" className='z-0' key={value} value={value}>
                                     {label}
                                 </Tab>
                             ))}
@@ -326,7 +326,7 @@ export default function OrderEditForm() {
                             {orderProduct.map((item, index) => (
                                 <ListItem placeholder="" ripple={false} className="py-1 pr-1 pl-4" key={index}>
                                     <div className='flex flex-row justify-between gap-10'>
-                                        <h2 className='font-semibold text-center'>{item.name}</h2>
+                                        <h2 className='font-semibold text-center sm:text-sm md:text-md'>{item.name}</h2>
                                         <p className=''>Quantity: {item?.quantity}</p>
                                         <p className=''>Total: ${(item?.quantity * item.total).toFixed(2)}</p>
                                     </div>

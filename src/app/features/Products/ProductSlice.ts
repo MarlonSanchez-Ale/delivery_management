@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Product } from "../../../interfaces/Index";
 
 const initialState: Product[] = [
-    { idProduct: "1", name: "Jamones", price: 20 },
+    { idProduct: "1", name: "Arroz de leche", price: 20 },
     { idProduct: "2", name: "Galletas", price: 10 },
     { idProduct: "3", name: "Flan", price: 20 }
 ];

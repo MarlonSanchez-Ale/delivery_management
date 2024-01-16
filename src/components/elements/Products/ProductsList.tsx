@@ -1,4 +1,4 @@
-import { Card, Typography, Button, IconButton } from '@material-tailwind/react';
+import { Card, Typography, Button, IconButton, Badge } from '@material-tailwind/react';
 import { Product } from '../../../interfaces/Index';
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector, useAppDispatch } from '../../../app/features/service/hooks';
@@ -18,29 +18,17 @@ export default function ProductsList() {
     }
 
     return (
-        <div className='h-full sm:w-auto p-8 justify-center md:w-4/6'>
+        <div className='h-full mt-5'>
             <div className='flex flex-col gap-3 justify-center p-6'>
-                <h1 className="text-3xl text-primary font-bold underline text-center">
+                <h1 className="text-3xl text-primary font-bold text-center">
                     Product Management
                 </h1>
-                <p className=' text-xl font-light text-gray-600'>Product management for your orders</p>
+                <p className='text-xl font-light text-center text-gray-500'>Product management for your orders</p>
             </div>
-            <div className="grid place-items-center" >
-                <Button placeholder="" onClick={() => navigate('/')} variant="outlined" className=' shadow-md'>Back to Orders</Button>
-
-            </div>
-            <div className="flex py-4 my-5 sm:flex-col gap-5 md:flex-row justify-between">
-                <div className={`grid place-items-center p-2 rounded-md shadow-lg bg-second w-full`}>
-                    <p className=' text-start text-lg text-primary font-bold'>
-                        {`Total de Productos: ${products.length}`}
-                    </p>
-                </div>
-                <button
-                    className=' bg-primary text-center text-gray-200 justify-end text-lg  font-medium p-3 rounded-md shadow-lg'
-                    onClick={() => navigate('/products/create')}
-                >
-                    Add Product
-                </button>
+            <div className="flex justify-end p-5 gap-5">
+                <Badge content={products.length}>
+                    <Button placeholder="" className='bg-primary' onClick={() => navigate("/products/create")}>Create</Button>
+                </Badge>
             </div>
 
             <div className='w-full'>
@@ -54,7 +42,7 @@ export default function ProductsList() {
                                             <Typography
                                                 variant="small" placeholder=""
                                                 color="blue-gray"
-                                                className="font-normal leading-none opacity-70"
+                                                className="font-normal  opacity-70"
                                             >
                                                 {head}
                                             </Typography>
