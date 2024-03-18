@@ -63,11 +63,11 @@ function NavbarElement() {
 
     if (time) {
       setDayIcon(time)
-      setGreeting("Good Evening")
+      setGreeting("Good Morning")
       setSubtitle("What deliveries do we have for today?")
     } else {
       setDayIcon(time)
-      setGreeting("Good Morning")
+      setGreeting("Good Evening")
       setSubtitle("Where are we going tomorrow?")
     }
 
